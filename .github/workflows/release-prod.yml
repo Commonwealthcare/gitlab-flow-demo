@@ -1,10 +1,10 @@
-name: Gitlab Flow Demo - UAT
+name: Gitlab Flow Demo - PROD
 
 on:
   workflow_dispatch:
   push:
     branches:    
-      - release-uat
+      - release-prod
 
 jobs:
   deploy-to-prod:
