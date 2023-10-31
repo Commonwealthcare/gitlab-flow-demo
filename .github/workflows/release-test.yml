@@ -1,0 +1,28 @@
+name: Gitlab Flow Demo - TEST
+
+on:
+  workflow_dispatch:
+  push:
+    branches:    
+      - release-test
+
+jobs:
+  deploy-to-test:
+    runs-on: windows-latest
+    environment: test
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.x
+
+    - name: Deploy to test
+      run: python program.py
+      env:
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        DB_URL: ${{ vars.DB_URL }}
+        DB_USERNAME: ${{ vars.DB_USERNAME }}

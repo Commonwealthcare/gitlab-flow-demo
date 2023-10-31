@@ -1,0 +1,29 @@
+name: Gitlab Flow Demo - UAT
+
+on:
+  workflow_dispatch:
+  push:
+    branches:    
+      - release-uat
+
+jobs:
+    deploy-to-uat:
+        runs-on: windows-latest
+        environment: uat
+    
+        steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+    
+        - name: Set up Python
+          uses: actions/setup-python@v2
+          with:
+            python-version: 3.x
+    
+        - name: Deploy to uat
+          run: python program.py
+          env:
+            DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+            DB_URL: ${{ vars.DB_URL }}
+            DB_USERNAME: ${{ vars.DB_USERNAME }}
+    
