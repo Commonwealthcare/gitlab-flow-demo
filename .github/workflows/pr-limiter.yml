@@ -1,0 +1,33 @@
+name: Branch Merge Limiter
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+    branches:
+      - main
+      - release-*
+
+jobs:
+  check-branches:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: PR to PROD
+        if: github.base_ref == 'release-prod' && github.head_ref != 'release-uat'
+        run: |
+          echo "Pull Requests to release-prod are only allowed from release-uat branch."
+          exit 1
+
+      - name: PR to UAT
+        if: github.base_ref == 'release-uat' && github.head_ref != 'release-test'
+        run: |
+          echo "Pull Requests to release-uat are only allowed from release-test branch."
+          exit 1
+
+      - name: PR to TEST
+        if: github.base_ref == 'release-test' && github.head_ref != 'main'
+        run: |
+          echo "Pull Requests to release-test are only allowed from main branch."
+          exit 1
